@@ -61,7 +61,7 @@ model VerificationToken {
 }
 
 model Podcast {
-    id             String   @id @default(cuid())
+    guid           String   @id @unique
     url            String
     title          String
     link           String
@@ -71,7 +71,6 @@ model Podcast {
     episodeCount   Int
     priority       Int
     updateFequency Int
-    podcastGuid    String   @unique
     description    String
     category       String
     updatedAt      DateTime @updatedAt
