@@ -34,20 +34,18 @@ type PageProp = {
 export const getServerSideProps: GetServerSideProps<PageProp> = async ({
   params,
 }) => {
-  if (!params) return { props: { podcast: null } };
-
   const podcasts: Podcast | null = await prisma.podcast.findUniqueOrThrow({
     where: {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      guid: `${params.slug}`,
+      guid: `${params?.slug}`,
     },
   });
   const podcastData: metaData = await parseFromUrl(podcasts.url);
-
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const podcast: Podcast | null = await JSON.parse(JSON.stringify(podcasts));
+
   return {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    props: { podcast: JSON.parse(JSON.stringify(podcasts)), podcastData },
+    props: { podcast, podcastData },
   };
 };
 

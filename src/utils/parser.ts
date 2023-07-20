@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { XmlDocument, parse } from "fsp-xml-parser";
+import { parse } from "fsp-xml-parser";
 
 export const parseFromUrl = async (url: string) => {
     const xml = await fetch(url).then(

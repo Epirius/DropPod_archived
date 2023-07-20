@@ -1,7 +1,7 @@
 import type { Podcast } from "@prisma/client";
-import { Virtualizer, useVirtualizer } from "@tanstack/react-virtual";
-import React, { useRef, useState } from "react";
-import { randomUUID } from "crypto";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import React, { useRef } from "react";
+import { useAudioStore } from "./Player";
 
 interface Props {
   podcast: Podcast;
@@ -11,7 +11,6 @@ interface Props {
 const EpisodeList = ({ podcast, metaData }: Props) => {
   // The scrollable element for your list
   const parentRef = useRef(null);
-  console.log(metaData);
 
   // The virtualizer
   const rowVirtualizer = useVirtualizer({
@@ -48,38 +47,24 @@ const EpisodeList = ({ podcast, metaData }: Props) => {
   );
 };
 
-const Episode = ({ data }: { data: EpisodeType | undefined }) => {
+interface EpisodeProps {
+  data: EpisodeType | undefined;
+}
+
+const Episode = ({ data }: EpisodeProps) => {
+  const [setAudioSource] = useAudioStore((state) => [state.setAudioSource]);
   if (!data) {
     return <p className="bg-red-600">error this episode does not exist</p>;
   }
+
+  const episodeLink = data.enclosure.url;
+
   return (
-    <div>
+    <div className="space-be flex flex-row justify-between">
       <p>{data.title}</p>
+      <button onClick={() => setAudioSource(episodeLink)}>play</button>
     </div>
   );
 };
 
 export default EpisodeList;
-
-/*
-{rowVirtualizer.getVirtualItems().map((virtualRow) => (
-          <div
-            key={virtualRow.index}
-            className={virtualRow.index % 2 ? "bg-yellow-400" : "bg-yellow-600"}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: `${virtualRow.size}px`,
-              transform: `translateY(${virtualRow.start}px)`,
-            }}
-          >
-            hi
-            {/* {episodes[virtualRow.index].map((e) => ( * /}
-            {/* <Episode key={virtualRow.index} data={e} /> * /}
-            {/* ))} * /}
-            {/* <Episode /> * /}
-          // </div>
-        // ))}
-// */

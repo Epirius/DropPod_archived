@@ -1,22 +1,50 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PlayButton from "./ui/PlayButton";
+import { create } from "zustand";
+
+interface audioState {
+  audioSource: string;
+}
+
+interface audioAction {
+  setAudioSource: (newSource: audioState["audioSource"]) => void;
+}
+
+export const useAudioStore = create<audioState & audioAction>()((set) => ({
+  audioSource: "",
+  setAudioSource: (newSource) => set(() => ({ audioSource: newSource })),
+}));
 
 const Player = () => {
   const [playing, setPlaying] = useState<boolean>(false);
   const player = useRef<HTMLAudioElement>(null);
-  const [audioSource, setAudioSource] = useState<string>(
-    "https://traffic.megaphone.fm/NSR3125996142.mp3?updated=1689176929"
-  );
+  const [audioSource] = useAudioStore((state) => [state.audioSource]);
+
+  useEffect(() => {
+    if (audioSource === undefined || audioSource === "") return;
+    _pause();
+    void player.current?.load();
+    _play();
+  }, [audioSource]);
 
   const handlePlayButtonClick = () => {
     if (!playing) {
-      void player.current?.play().then(() => {
-        setPlaying(true);
-      });
+      if (audioSource === "" || audioSource === undefined) return;
+      _play();
     } else {
-      void player.current?.pause();
-      setPlaying(false);
+      _pause();
     }
+  };
+
+  const _play = () => {
+    void player.current?.play().then(() => {
+      setPlaying(true);
+    });
+  };
+
+  const _pause = () => {
+    void player.current?.pause();
+    setPlaying(false);
   };
 
   return (
@@ -28,3 +56,5 @@ const Player = () => {
 };
 
 export default Player;
+
+// "https://traffic.megaphone.fm/NSR3125996142.mp3?updated=1689176929"
