@@ -17,6 +17,7 @@ const EpisodeList = ({ podcast, metaData }: Props) => {
     count: metaData.items.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 20,
+    overscan: 5,
   });
   return (
     <div className="h-[30rem] overflow-auto bg-yellow-500" ref={parentRef}>
