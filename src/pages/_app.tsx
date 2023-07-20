@@ -12,9 +12,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <div className="flex min-h-screen flex-col">
+      <div className="flex h-screen max-h-screen min-h-screen flex-col">
         <Header />
-        <div className="flex-grow">
+        <div className="max-h-fit flex-grow bg-GRAY_CLOUD text-slate-50 ">
           <Component {...pageProps} />
         </div>
         <Player />

@@ -38,6 +38,9 @@ dependencies:
   '@trpc/server':
     specifier: ^10.26.0
     version: 10.26.0
+  fsp-xml-parser:
+    specifier: ^1.0.0
+    version: 1.0.0
   next:
     specifier: ^13.4.2
     version: 13.4.2(react-dom@18.2.0)(react@18.2.0)
@@ -1772,6 +1775,10 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /fsp-xml-parser@1.0.0:
+    resolution: {integrity: sha512-/8AsntW1A/+N/78Ki/cYV7jaZMVir9zo7dUHjPtiia+M53PbVNzdaSyJPNKNt0sImcWM6UdrprgbjlVr8VJGTw==}
+    dev: false
 
   /function-bind@1.1.1:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
