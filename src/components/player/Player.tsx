@@ -67,9 +67,9 @@ const Player = () => {
       <PlayButton onClick={handlePlayButtonClick} playing={playing} />
       <Progressbar
         onChange={(time) => playerSeek(time)}
-        length={player.current?.duration ?? 9999}
+        length={player.current?.duration ?? 0}
         value={currentPlayerTime}
-        playerRef={player}
+        active={audioSource.length > 0}
       />
     </div>
   );
