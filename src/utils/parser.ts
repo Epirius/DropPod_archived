@@ -6,7 +6,12 @@ export const parseFromUrl = async (url: string) => {
     const xml = await fetch(url).then(
     async (res) => parse(await res.text())
   );
-    const root = xml.root?.children[0]?.children
+    let root;
+     if (xml && xml.root && xml.root.children) {
+        root = xml.root?.children[0]?.children
+     } else {
+        throw new Error("could not read the xml");
+     }
      
     const meta = root!.filter( node => node.name !== 'item')
     const items= root!.filter( node => node.name === 'item')
