@@ -17,6 +17,7 @@ const PodcastCard = ({ data }: Props) => {
           width={200}
           height={200}
           alt={"cover image for " + data.title}
+          priority={true}
         />
       </Link>
     </div>

@@ -19,6 +19,7 @@ const PodcastPage = ({ podcast, podcastData }: PageProp) => {
         alt={"cover image for the podcast"}
         width={300}
         height={300}
+        priority={true}
       />
       {/* line break */}
       <EpisodeList podcast={podcast} metaData={podcastData} />
