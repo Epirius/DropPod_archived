@@ -2,6 +2,7 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
+import { Analytics } from "@vercel/analytics/react";
 import "~/styles/globals.css";
 import Header from "~/components/Header";
 import Player from "~/components/Player";
@@ -41,6 +42,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           <Header />
           <div className="max-h-fit flex-grow bg-GRAY_CLOUD text-slate-50 ">
             <Component {...pageProps} />
+            <Analytics />
           </div>
           <Player />
         </div>
