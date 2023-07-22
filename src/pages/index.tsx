@@ -5,10 +5,9 @@ import Head from "next/head";
 import PodcastCard from "~/components/PodcastCard";
 import { prisma } from "~/server/db";
 import { api } from "~/utils/api";
-import { favicon } from "public/favicon_package_v0.16/favicon.ico";
 
 export default function Home({ podcasts }: PageProp) {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   return (
     <>
