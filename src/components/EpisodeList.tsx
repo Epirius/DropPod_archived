@@ -1,7 +1,7 @@
 import type { Podcast } from "@prisma/client";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import React, { useRef } from "react";
-import { useAudioStore } from "./Player";
+import { useAudioStore } from "./player/Player";
 
 interface Props {
   podcast: Podcast;

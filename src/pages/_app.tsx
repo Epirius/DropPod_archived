@@ -4,7 +4,7 @@ import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import Header from "~/components/Header";
-import Player from "~/components/Player";
+import Player from "~/components/player/Player";
 import Head from "next/head";
 
 const MyApp: AppType<{ session: Session | null }> = ({

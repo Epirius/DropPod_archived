@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import PlayButton from "./ui/PlayButton";
+import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
+import PlayButton from "./PlayButton";
 import { create } from "zustand";
+import Progressbar from "./Progressbar";
 
 interface audioState {
   audioSource: string;
@@ -17,44 +18,57 @@ export const useAudioStore = create<audioState & audioAction>()((set) => ({
 
 const Player = () => {
   const [playing, setPlaying] = useState<boolean>(false);
+  const [currentPlayerTime, setCurrentPlayerTime] = useState<number[]>([0]);
   const player = useRef<HTMLAudioElement>(null);
   const [audioSource] = useAudioStore((state) => [state.audioSource]);
 
   useEffect(() => {
     if (audioSource === undefined || audioSource === "") return;
-    _pause();
+    pause();
     void player.current?.load();
-    _play();
+    play();
   }, [audioSource]);
 
   const handlePlayButtonClick = () => {
     if (!playing) {
       if (audioSource === "" || audioSource === undefined) return;
-      _play();
+      play();
     } else {
-      _pause();
+      pause();
     }
   };
 
-  const _play = () => {
-    void player.current?.play().then(() => {
-      setPlaying(true);
-    });
+  const play = () => {
+    void player.current?.play();
   };
 
-  const _pause = () => {
+  const pause = () => {
     void player.current?.pause();
-    setPlaying(false);
+  };
+
+  const refreshPlayerTime = (e: SyntheticEvent<HTMLAudioElement, Event>) => {
+    const target = e.target as HTMLAudioElement;
+    setCurrentPlayerTime([target.currentTime]);
   };
 
   return (
     <div className="flex h-16 items-center justify-center bg-RED_CARMINE">
+      <audio
+        ref={player}
+        src={audioSource}
+        onPlaying={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onTimeUpdate={(e) => refreshPlayerTime(e)}
+      />
       <PlayButton onClick={handlePlayButtonClick} playing={playing} />
-      <audio ref={player} src={audioSource} />
+      <Progressbar
+        onChange={(e) => console.log(e)}
+        length={player.current?.duration ?? 9999}
+        value={currentPlayerTime}
+        playerRef={player}
+      />
     </div>
   );
 };
 
 export default Player;
-
-// "https://traffic.megaphone.fm/NSR3125996142.mp3?updated=1689176929"
