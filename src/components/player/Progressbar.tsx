@@ -26,17 +26,17 @@ const Progressbar = ({
         onValueChange={(e) => {
           if (e[0]) onChange(e[0]);
         }}
-        step={1}
+        step={0.1}
         max={length}
         value={value}
         ref={root}
         className="relative flex h-5 w-[200px] touch-none select-none items-center"
       >
         <Slider.Track className="relative h-[3px] grow rounded-full bg-BLACK_CYNICAL">
-          <Slider.Range className="absolute h-full rounded-full bg-white" />
+          <Slider.Range className="absolute h-full rounded-full bg-WHITE_EGG" />
         </Slider.Track>
         <Slider.Thumb
-          className="shatod-[0_2px_10px] block h-5 w-5 rounded-[10px] bg-gray-50 shadow-black hover:bg-violet-200 focus:shadow-[0_0_0_5px] focus:shadow-black focus:outline-none"
+          className="block h-3 w-3 rounded-[10px] bg-WHITE_EGG   hover:bg-violet-200 focus:shadow-[0_0_0_5px] focus:shadow-black focus:outline-none"
           aria-label="progress bar"
         />
       </Slider.Root>

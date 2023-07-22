@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
+import React, { type SyntheticEvent, useEffect, useRef, useState } from "react";
 import PlayButton from "./PlayButton";
 import { create } from "zustand";
 import Progressbar from "./Progressbar";
@@ -51,6 +51,10 @@ const Player = () => {
     setCurrentPlayerTime([target.currentTime]);
   };
 
+  const playerSeek = (time: number) => {
+    if (player.current) player.current.currentTime = time;
+  };
+
   return (
     <div className="flex h-16 items-center justify-center bg-RED_CARMINE">
       <audio
@@ -62,7 +66,7 @@ const Player = () => {
       />
       <PlayButton onClick={handlePlayButtonClick} playing={playing} />
       <Progressbar
-        onChange={(e) => console.log(e)}
+        onChange={(time) => playerSeek(time)}
         length={player.current?.duration ?? 9999}
         value={currentPlayerTime}
         playerRef={player}
