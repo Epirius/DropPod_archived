@@ -102,7 +102,7 @@ const Player = () => {
   }, []);
 
   return (
-    <div className="flex h-20 items-center justify-center bg-RED_CARMINE">
+    <div className="flex h-20 items-center justify-center bg-RED_CARMINE z-40">
       <audio
         hidden={true}
         ref={player}
