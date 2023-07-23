@@ -3,6 +3,7 @@ import PlayButton from "./PlayButton";
 import { create } from "zustand";
 import Progressbar from "./Progressbar";
 import Volume from "./Volume";
+import SpeedController from "~/components/player/SpeedController";
 
 interface audioState {
   audioSource: string;
@@ -20,6 +21,7 @@ export const useAudioStore = create<audioState & audioAction>()((set) => ({
 const Player = () => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [currentPlayerTime, setCurrentPlayerTime] = useState<number[]>([0]);
+  const [speed, setSpeed] = useState<number>(1);
   const [volume, setVolume] = useState<number>(0.6);
   const [muted, setMuted] = useState<boolean>(false);
   const player = useRef<HTMLAudioElement>(null);
@@ -49,19 +51,17 @@ const Player = () => {
     void player.current?.pause();
   };
 
-  const refreshPlayerTime = (e: SyntheticEvent<HTMLAudioElement, Event>) => {
-    const target = e.target as HTMLAudioElement;
-    setCurrentPlayerTime([target.currentTime]);
-  };
-
   const playerSeek = (time: number) => {
     if (player.current) player.current.currentTime = time;
   };
 
   const refreshAudioData = (e: SyntheticEvent<HTMLAudioElement, Event>) => {
     const target = e.target as HTMLAudioElement;
+    console.log(e)
     setVolume(target.volume);
     setMuted(target.muted);
+    setSpeed(target.playbackRate);
+    setCurrentPlayerTime([target.currentTime]);
   };
 
   const setPlayerVolume = (volume: number) => {
@@ -74,6 +74,11 @@ const Player = () => {
       muteSound(false)
     }
   };
+
+  const setPlaybackSpeed = (speed: number) => {
+    if (!player.current) return;
+    player.current.playbackRate = speed;
+  }
 
   const muteSound = (mute: boolean) => {
     if (!player.current) return;
@@ -98,15 +103,16 @@ const Player = () => {
   }, []);
 
   return (
-    <div className="flex h-16 items-center justify-center bg-RED_CARMINE">
+    <div className="flex h-20 items-center justify-center bg-RED_CARMINE">
       <audio
         hidden={true}
         ref={player}
         src={audioSource}
         onPlaying={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
-        onTimeUpdate={(e) => refreshPlayerTime(e)}
+        onTimeUpdate={(e) => refreshAudioData(e)}
         onVolumeChange={(e) => refreshAudioData(e)}
+        onRateChange={(e) => refreshAudioData(e)}
       />
       <Volume
         onChange={(volume) => setPlayerVolume(volume)}
@@ -122,6 +128,7 @@ const Player = () => {
         value={currentPlayerTime}
         active={audioSource.length > 0}
       />
+      <SpeedController setSpeed={setPlaybackSpeed} speed={speed}/>
     </div>
   );
 };

@@ -40,7 +40,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <SessionProvider session={session}>
         <div className="flex h-screen max-h-screen min-h-screen flex-col">
           <Header />
-          <div className="max-h-fit flex-grow bg-GRAY_CLOUD text-slate-50 ">
+          <div className="h-1 flex-grow bg-GRAY_CLOUD text-slate-50 ">
             <Component {...pageProps} />
             <Analytics />
           </div>
