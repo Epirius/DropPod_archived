@@ -21,6 +21,7 @@ const Player = () => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [currentPlayerTime, setCurrentPlayerTime] = useState<number[]>([0]);
   const [volume, setVolume] = useState<number>(0.6);
+  const [muted, setMuted] = useState<boolean>(false);
   const player = useRef<HTMLAudioElement>(null);
   const [audioSource] = useAudioStore((state) => [state.audioSource]);
 
@@ -57,21 +58,27 @@ const Player = () => {
     if (player.current) player.current.currentTime = time;
   };
 
-  const refreshVolume = (e: SyntheticEvent<HTMLAudioElement, Event>) => {
+  const refreshAudioData = (e: SyntheticEvent<HTMLAudioElement, Event>) => {
     const target = e.target as HTMLAudioElement;
     setVolume(target.volume);
+    setMuted(target.muted);
   };
 
-  const playerVolume = (volume: number) => {
+  const setPlayerVolume = (volume: number) => {
     if (!player.current) return;
     player.current.volume = volume;
     localStorage.setItem("volume", String(volume));
     if (volume < 0.02) {
-      player.current.muted = true;
+      muteSound(true)
     } else {
-      player.current.muted = false;
+      muteSound(false)
     }
   };
+
+  const muteSound = (mute: boolean) => {
+    if (!player.current) return;
+    player.current.muted = mute;
+  }
 
   useEffect(() => {
     // set volume on startup
@@ -87,7 +94,7 @@ const Player = () => {
     } else {
       volume = 0.6;
     }
-    setVolume(volume);
+    setPlayerVolume(volume);
   }, []);
 
   return (
@@ -99,13 +106,15 @@ const Player = () => {
         onPlaying={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onTimeUpdate={(e) => refreshPlayerTime(e)}
-        onVolumeChange={(e) => refreshVolume(e)}
+        onVolumeChange={(e) => refreshAudioData(e)}
       />
       <Volume
-        onChange={(volume) => playerVolume(volume)}
+        onChange={(volume) => setPlayerVolume(volume)}
         value={volume}
         defaultValue={volume}
-      />
+        muteSound={muteSound}
+        muted={muted}/>
+
       <PlayButton onClick={handlePlayButtonClick} playing={playing} />
       <Progressbar
         onChange={(time) => playerSeek(time)}
