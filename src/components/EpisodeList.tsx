@@ -20,7 +20,7 @@ const EpisodeList = ({ podcast, metaData }: Props) => {
     overscan: 5,
   });
   return (
-    <div className="h-[26rem] overflow-auto bg-yellow-500" ref={parentRef}>
+    <div className=" absolute top-0 bottom-0 w-full overflow-auto bg-yellow-500" ref={parentRef}>
       <div
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,

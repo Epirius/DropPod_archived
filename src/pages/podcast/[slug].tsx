@@ -12,7 +12,9 @@ const PodcastPage = ({ podcast, podcastData }: PageProp) => {
 
   if (!podcast) return <p>could not load page</p>;
   return (
-    <div>
+    <div className="relative h-full flex flex-col">
+      <div className="">
+
       <p>{slug}</p>
       <Image
         src={podcast.imageUrl}
@@ -21,8 +23,12 @@ const PodcastPage = ({ podcast, podcastData }: PageProp) => {
         height={300}
         priority={true}
       />
+      </div>
       {/* line break */}
+      <div className="relative flex-grow">
+
       <EpisodeList podcast={podcast} metaData={podcastData} />
+      </div>
     </div>
   );
 };
