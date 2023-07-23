@@ -57,7 +57,6 @@ const Player = () => {
 
   const refreshAudioData = (e: SyntheticEvent<HTMLAudioElement, Event>) => {
     const target = e.target as HTMLAudioElement;
-    console.log(e)
     setVolume(target.volume);
     setMuted(target.muted);
     setSpeed(target.playbackRate);
