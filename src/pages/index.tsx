@@ -4,11 +4,12 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import PodcastCard from "~/components/PodcastCard";
 import { prisma } from "~/server/db";
-import { api } from "~/utils/api";
 
 export default function Home({ podcasts }: PageProp) {
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
+  const { data: sessionData } = useSession();
+  console.log(sessionData);
   return (
     <>
       <Head>
@@ -34,12 +35,15 @@ export default function Home({ podcasts }: PageProp) {
         />
       </Head>
       <main className=" overflow-auto ">
-        <div className="grid grid-cols-4  gap-4 overflow-x-hidden">
-          {podcasts &&
-            podcasts.map((p) => (
-              <PodcastCard key={p.guid + "_card"} data={p} />
-            ))}
-        </div>
+        {sessionData && (
+          <div className="grid grid-cols-4  gap-4 overflow-x-hidden">
+            {podcasts &&
+              podcasts.map((p) => (
+                <PodcastCard key={p.guid + "_card"} data={p} />
+              ))}
+          </div>
+        )}
+        {!sessionData && <p>NOT SIGNED IN</p>}
       </main>
     </>
   );
