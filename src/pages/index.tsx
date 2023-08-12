@@ -4,11 +4,13 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import PodcastCard from "~/components/PodcastCard";
 import { prisma } from "~/server/db";
+import {api} from "~/utils/api";
 
-export default function Home({ podcasts }: PageProp) {
+export default function Home(){
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   const { data: sessionData } = useSession();
+  const podcasts = api.podcast.getPodcast.useQuery({category: "history", languageCode: "en", limit: 10});
   console.log(sessionData);
   return (
     <>
@@ -37,8 +39,8 @@ export default function Home({ podcasts }: PageProp) {
       <main className=" overflow-auto ">
         {sessionData && (
           <div className="grid grid-cols-4  gap-4 overflow-x-hidden">
-            {podcasts &&
-              podcasts.map((p) => (
+            {podcasts.data &&
+              podcasts.data.map((p) => (
                 <PodcastCard key={p.guid + "_card"} data={p} />
               ))}
           </div>
@@ -71,23 +73,3 @@ function AuthShowcase() {
     </div>
   );
 }
-
-export const getServerSideProps: GetServerSideProps<PageProp> = async () => {
-  const podcasts: Podcast[] | null = await prisma.podcast.findMany({
-    where: {
-      category: "history",
-      languageCode: "en",
-    },
-    take: 10,
-    orderBy: {
-      priority: "desc",
-    },
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  return { props: { podcasts: JSON.parse(JSON.stringify(podcasts)) } };
-};
-
-type PageProp = {
-  podcasts: Podcast[] | null;
-};
