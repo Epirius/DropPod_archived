@@ -6,16 +6,24 @@ import Volume from "./Volume";
 import SpeedController from "~/components/player/SpeedController";
 
 interface audioState {
-  audioSource: string;
+  episodeData: EpisodeType;
 }
 
 interface audioAction {
-  setAudioSource: (newSource: audioState["audioSource"]) => void;
+  setAudioSource: (newData: audioState["episodeData"]) => void;
 }
 
 export const useAudioStore = create<audioState & audioAction>()((set) => ({
-  audioSource: "",
-  setAudioSource: (newSource) => set(() => ({ audioSource: newSource })),
+  episodeData: {
+    title: "",
+    enclosure: {
+      url: "",
+    },
+  },
+  setAudioSource: (newData) =>
+    set(() => ({
+      episodeData: newData,
+    })),
 }));
 
 const Player = () => {
@@ -25,18 +33,22 @@ const Player = () => {
   const [volume, setVolume] = useState<number>(0.6);
   const [muted, setMuted] = useState<boolean>(false);
   const player = useRef<HTMLAudioElement>(null);
-  const [audioSource] = useAudioStore((state) => [state.audioSource]);
+  const [episodeData] = useAudioStore((state) => [state.episodeData]);
 
   useEffect(() => {
-    if (audioSource === undefined || audioSource === "") return;
+    if (episodeData === undefined || episodeData.enclosure.url === "") return;
     pause();
     void player.current?.load();
     play();
-  }, [audioSource]);
+  }, [episodeData]);
 
   const handlePlayButtonClick = () => {
     if (!playing) {
-      if (audioSource === "" || audioSource === undefined) return;
+      if (
+        episodeData.enclosure.url === "" ||
+        episodeData.enclosure.url === undefined
+      )
+        return;
       play();
     } else {
       pause();
@@ -68,21 +80,21 @@ const Player = () => {
     player.current.volume = volume;
     localStorage.setItem("volume", String(volume));
     if (volume < 0.02) {
-      muteSound(true)
+      muteSound(true);
     } else {
-      muteSound(false)
+      muteSound(false);
     }
   };
 
   const setPlaybackSpeed = (speed: number) => {
     if (!player.current) return;
     player.current.playbackRate = speed;
-  }
+  };
 
   const muteSound = (mute: boolean) => {
     if (!player.current) return;
     player.current.muted = mute;
-  }
+  };
 
   useEffect(() => {
     // set volume on startup
@@ -102,11 +114,11 @@ const Player = () => {
   }, []);
 
   return (
-    <div className="flex h-20 items-center justify-center bg-RED_CARMINE z-40">
+    <div className="z-40 flex h-20 items-center justify-center bg-RED_CARMINE">
       <audio
         hidden={true}
         ref={player}
-        src={audioSource}
+        src={episodeData.enclosure.url}
         onPlaying={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onTimeUpdate={(e) => refreshAudioData(e)}
@@ -118,16 +130,17 @@ const Player = () => {
         value={volume}
         defaultValue={volume}
         muteSound={muteSound}
-        muted={muted}/>
+        muted={muted}
+      />
 
       <PlayButton onClick={handlePlayButtonClick} playing={playing} />
       <Progressbar
         onChange={(time) => playerSeek(time)}
         length={player.current?.duration ?? 0}
         value={currentPlayerTime}
-        active={audioSource.length > 0}
+        active={episodeData.enclosure.url.length > 0}
       />
-      <SpeedController setSpeed={setPlaybackSpeed} speed={speed}/>
+      <SpeedController setSpeed={setPlaybackSpeed} speed={speed} />
     </div>
   );
 };

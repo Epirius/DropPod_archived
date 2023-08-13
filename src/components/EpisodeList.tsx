@@ -20,7 +20,10 @@ const EpisodeList = ({ podcast, metaData }: Props) => {
     overscan: 5,
   });
   return (
-    <div className=" absolute top-0 bottom-0 w-full overflow-auto bg-yellow-500" ref={parentRef}>
+    <div
+      className=" absolute bottom-0 top-0 w-full overflow-auto bg-yellow-500"
+      ref={parentRef}
+    >
       <div
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,
@@ -58,12 +61,10 @@ const Episode = ({ data }: EpisodeProps) => {
     return <p className="bg-red-600">error this episode does not exist</p>;
   }
 
-  const episodeLink = data.enclosure.url;
-
   return (
     <div className="space-be flex flex-row justify-between">
       <p>{data.title}</p>
-      <button onClick={() => setAudioSource(episodeLink)}>play</button>
+      <button onClick={() => setAudioSource(data)}>play</button>
     </div>
   );
 };
