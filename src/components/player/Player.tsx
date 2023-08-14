@@ -4,19 +4,34 @@ import { create } from "zustand";
 import Progressbar from "./Progressbar";
 import Volume from "./Volume";
 import SpeedController from "~/components/player/SpeedController";
+import { api } from "~/utils/api";
 
 interface audioState {
-  audioSource: string;
+  episodeData: EpisodeType;
 }
 
 interface audioAction {
-  setAudioSource: (newSource: audioState["audioSource"]) => void;
+  setAudioSource: (newData: audioState["episodeData"]) => void;
 }
 
 export const useAudioStore = create<audioState & audioAction>()((set) => ({
-  audioSource: "",
-  setAudioSource: (newSource) => set(() => ({ audioSource: newSource })),
+  episodeData: {
+    title: "",
+    enclosure: {
+      url: "",
+    },
+  },
+  setAudioSource: (newData) =>
+    set(() => ({
+      episodeData: newData,
+    })),
 }));
+
+const getEpisodeGuid = (episodeData: EpisodeType): string | undefined => {
+  const guid = episodeData.guid;
+  if (guid && typeof guid !== "string") return guid.data ?? undefined;
+  return guid;
+};
 
 const Player = () => {
   const [playing, setPlaying] = useState<boolean>(false);
@@ -25,18 +40,54 @@ const Player = () => {
   const [volume, setVolume] = useState<number>(0.6);
   const [muted, setMuted] = useState<boolean>(false);
   const player = useRef<HTMLAudioElement>(null);
-  const [audioSource] = useAudioStore((state) => [state.audioSource]);
+  const [episodeData] = useAudioStore((state) => [state.episodeData]);
+
+  const playtimeMutation = api.episode.setPlaybackPosition.useMutation();
+  const playtimeQuery = api.episode.getPlaybackPosition.useQuery({
+    episodeId: getEpisodeGuid(episodeData) ?? "",
+  });
 
   useEffect(() => {
-    if (audioSource === undefined || audioSource === "") return;
+    let interval: NodeJS.Timer | undefined;
+    if (playing) {
+      interval = setInterval(() => {
+        if (!playing) return;
+        const time = player.current?.currentTime;
+        if (!time || getEpisodeGuid(episodeData) === undefined) return;
+        playtimeMutation.mutate({
+          episodeId: getEpisodeGuid(episodeData) ?? "",
+          playtime: Math.floor(time),
+        });
+      }, 5000);
+    } else if (interval) {
+      clearInterval(interval);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [playing]);
+
+  useEffect(() => {
+    if (episodeData === undefined || episodeData.enclosure.url === "") return;
     pause();
     void player.current?.load();
-    play();
-  }, [audioSource]);
+    void playtimeQuery
+      .refetch()
+      .then((res) => {
+        if (res.data === undefined) return;
+        const playtime = res.data;
+        playerSeek(playtime);
+      })
+      .finally(() => play());
+  }, [episodeData]);
 
   const handlePlayButtonClick = () => {
     if (!playing) {
-      if (audioSource === "" || audioSource === undefined) return;
+      if (
+        episodeData.enclosure.url === "" ||
+        episodeData.enclosure.url === undefined
+      )
+        return;
       play();
     } else {
       pause();
@@ -68,21 +119,21 @@ const Player = () => {
     player.current.volume = volume;
     localStorage.setItem("volume", String(volume));
     if (volume < 0.02) {
-      muteSound(true)
+      muteSound(true);
     } else {
-      muteSound(false)
+      muteSound(false);
     }
   };
 
   const setPlaybackSpeed = (speed: number) => {
     if (!player.current) return;
     player.current.playbackRate = speed;
-  }
+  };
 
   const muteSound = (mute: boolean) => {
     if (!player.current) return;
     player.current.muted = mute;
-  }
+  };
 
   useEffect(() => {
     // set volume on startup
@@ -102,11 +153,11 @@ const Player = () => {
   }, []);
 
   return (
-    <div className="flex h-20 items-center justify-center bg-RED_CARMINE z-40">
+    <div className="z-40 flex h-20 items-center justify-center bg-RED_CARMINE">
       <audio
         hidden={true}
         ref={player}
-        src={audioSource}
+        src={episodeData.enclosure.url}
         onPlaying={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onTimeUpdate={(e) => refreshAudioData(e)}
@@ -118,16 +169,17 @@ const Player = () => {
         value={volume}
         defaultValue={volume}
         muteSound={muteSound}
-        muted={muted}/>
+        muted={muted}
+      />
 
       <PlayButton onClick={handlePlayButtonClick} playing={playing} />
       <Progressbar
         onChange={(time) => playerSeek(time)}
         length={player.current?.duration ?? 0}
         value={currentPlayerTime}
-        active={audioSource.length > 0}
+        active={episodeData.enclosure.url.length > 0}
       />
-      <SpeedController setSpeed={setPlaybackSpeed} speed={speed}/>
+      <SpeedController setSpeed={setPlaybackSpeed} speed={speed} />
     </div>
   );
 };

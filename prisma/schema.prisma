@@ -34,13 +34,14 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id                String             @id @default(cuid())
+  name              String?
+  email             String?            @unique
+  emailVerified     DateTime?
+  image             String?
+  accounts          Account[]
+  playbackPositions PlaybackPosition[]
+  sessions          Session[]
 }
 
 model VerificationToken {
@@ -57,7 +58,7 @@ model Podcast {
   title          String
   link           String
   contentType    String
-  itunesId       Int      @unique
+  itunesId       Int?     @unique
   imageUrl       String
   episodeCount   Int
   priority       Int
@@ -70,6 +71,16 @@ model Podcast {
 
   @@index([category, languageCode])
   @@index([priority])
+}
+
+model PlaybackPosition {
+  userId      String
+  episodeGuid String
+  playtime    Int
+  updatedAt   DateTime @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @updatedAt @db.Timestamptz(6)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, episodeGuid])
 }
 
 model Language {
