@@ -4,6 +4,7 @@ import { create } from "zustand";
 import Progressbar from "./Progressbar";
 import Volume from "./Volume";
 import SpeedController from "~/components/player/SpeedController";
+import { api } from "~/utils/api";
 
 interface audioState {
   episodeData: EpisodeType;
@@ -26,6 +27,12 @@ export const useAudioStore = create<audioState & audioAction>()((set) => ({
     })),
 }));
 
+const getEpisodeGuid = (episodeData: EpisodeType): string | undefined => {
+  const guid = episodeData.guid;
+  if (guid && typeof guid !== "string") return guid.data ?? undefined;
+  return guid;
+};
+
 const Player = () => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [currentPlayerTime, setCurrentPlayerTime] = useState<number[]>([0]);
@@ -35,11 +42,43 @@ const Player = () => {
   const player = useRef<HTMLAudioElement>(null);
   const [episodeData] = useAudioStore((state) => [state.episodeData]);
 
+  const playtimeMutation = api.episode.setPlaybackPosition.useMutation();
+  const playtimeQuery = api.episode.getPlaybackPosition.useQuery({
+    episodeId: getEpisodeGuid(episodeData) ?? "",
+  });
+
+  useEffect(() => {
+    let interval: NodeJS.Timer | undefined;
+    if (playing) {
+      interval = setInterval(() => {
+        if (!playing) return;
+        const time = player.current?.currentTime;
+        if (!time || getEpisodeGuid(episodeData) === undefined) return;
+        playtimeMutation.mutate({
+          episodeId: getEpisodeGuid(episodeData) ?? "",
+          playtime: Math.floor(time),
+        });
+      }, 5000);
+    } else if (interval) {
+      clearInterval(interval);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [playing]);
+
   useEffect(() => {
     if (episodeData === undefined || episodeData.enclosure.url === "") return;
     pause();
     void player.current?.load();
-    play();
+    void playtimeQuery
+      .refetch()
+      .then((res) => {
+        if (res.data === undefined) return;
+        const playtime = res.data;
+        playerSeek(playtime);
+      })
+      .finally(() => play());
   }, [episodeData]);
 
   const handlePlayButtonClick = () => {

@@ -31,20 +31,20 @@ export const episodeRouter = createTRPCRouter({
   getPlaybackPosition: protectedProcedure
     .input(
       z.object({
-        episodeId: z.string(),
+        episodeId: z.string().optional(),
       })
     )
-    .query(({ ctx, input }) => {
-      return ctx.prisma.playbackPosition.findUnique({
+    .query(async ({ ctx, input }) => {
+      if (!input.episodeId) return 0;
+      const result = await ctx.prisma.playbackPosition.findFirst({
         where: {
-          userId_episodeGuid: {
-            userId: ctx.session.user.id,
-            episodeGuid: input.episodeId,
-          },
+          userId: ctx.session.user.id,
+          episodeGuid: input.episodeId,
         },
         select: {
           playtime: true,
         },
       });
+      return result?.playtime ?? 0;
     }),
 });
