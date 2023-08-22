@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import logo from "../../public/logo1.png";
+import logo from "../../../public/logo1.png";
 import { signIn, useSession } from "next-auth/react";
-import ProfileAvatar from "./ui/ProfileAvatar";
+import ProfileAvatar from "../ui/ProfileAvatar";
+import Navbar from "./Navbar";
 
 const Header = () => {
   return (
@@ -15,6 +16,7 @@ const Header = () => {
         <Image src={logo} width="40" height="40" alt={"Drop pod logo"} />
         <p>DropPod</p>
       </Link>
+      <Navbar />
       <Login />
     </header>
   );
