@@ -11,16 +11,16 @@ const Navbar = () => {
           <NavigationMenu.Trigger className="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none">
             Category
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content className="absolute left-0 top-0 w-full sm:w-auto">
-            {getCategoryList().map((category) => {
-              return (
-                <ListItem
-                  href={`/category/${category}`}
-                  title={category}
-                  key={category}
-                />
-              );
-            })}
+          <NavigationMenu.Content className="absolute left-0 top-0 w-full sm:w-auto pl-4 pt-2">
+              {getCategoryList().map((category) => {
+                  return (
+                      <ListItem
+                          href={`/category/${category}`}
+                          title={category}
+                          key={category}
+                      />
+                  );
+              })}
           </NavigationMenu.Content>
         </NavigationMenu.Item>
 
@@ -28,7 +28,7 @@ const Navbar = () => {
       </NavigationMenu.List>
 
       <div className="perspective-[2000px] absolute left-0 top-full flex w-fit ">
-        <NavigationMenu.Viewport className="relative mt-[10px] h-64 w-24 origin-[top_center] overflow-hidden rounded-[6px] bg-BLACK_CYNICAL" />
+        <NavigationMenu.Viewport className="h-96 relative mt-[10px] h-64 w-48 origin-[top_center] overflow-hidden rounded-[6px] border-2 border-WHITE_EGG bg-BLACK_CYNICAL" />
       </div>
     </NavigationMenu.Root>
   );
@@ -39,9 +39,10 @@ interface ListItemProps {
   title: string;
 }
 
+
 const ListItem = ({ href, title }: ListItemProps) => {
   return (
-    <li>
+    <li className="list-none">
       <NavigationMenu.Link asChild>
         <Link href={href}>{title}</Link>
       </NavigationMenu.Link>
@@ -49,25 +50,5 @@ const ListItem = ({ href, title }: ListItemProps) => {
   );
 };
 
-// const ListItem = React.forwardRef(
-//   ({ children, title, ...props }, forwardedRef) => (
-//     <li>
-//       <NavigationMenu.Link asChild>
-//         <a
-//           className={
-//             "focus:shadow-violet7 hover:bg-mauve3 block select-none rounded-[6px] p-3 text-[15px] leading-none no-underline outline-none transition-colors focus:shadow-[0_0_0_2px]"
-//           }
-//           {...props}
-//           ref={forwardedRef}
-//         >
-//           <div className="text-violet12 mb-[5px] font-medium leading-[1.2]">
-//             {title}
-//           </div>
-//           <p className="text-mauve11 leading-[1.4]">{children}</p>
-//         </a>
-//       </NavigationMenu.Link>
-//     </li>
-//   )
-// );
 
 export default Navbar;
