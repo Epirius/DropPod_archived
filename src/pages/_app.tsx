@@ -4,9 +4,9 @@ import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import { Analytics } from "@vercel/analytics/react";
 import "~/styles/globals.css";
-import Header from "~/components/Header";
 import Player from "~/components/player/Player";
 import Head from "next/head";
+import Header from "~/components/header/Header";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

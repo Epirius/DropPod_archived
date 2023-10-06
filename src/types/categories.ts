@@ -1,36 +1,23 @@
 
-const enum Category {
-arts,
-baseball,
-business,
-christianity,
-comedy,
-culture,
-education,     
-entertainment,
-fantasy,       
-fiction,       
-film,          
-games,         
-government,    
-health,        
-history,       
-kids,          
-leisure,       
-music,         
-natural,       
-news,          
-philosophy,    
-politics,      
-religion,      
-science,       
-society,       
-spirituality,  
-sports,        
-technology,    
-true,     
-crime,
-tv,            
+enum Category {
+arts = "arts",
+business = "business",
+comedy = "comedy",
+education = "education",
+fiction = "fiction",
+games = "games",
+health = "health",
+history = "history",       
+music = "music",
+news = "news",
+science = "science",
+sports = "sports",
+technology = "technology",    
+tv = "tv",
+}
+
+export const getCategoryList = (): string[] => {
+    return Object.values(Category)
 }
 
 export default Category;
