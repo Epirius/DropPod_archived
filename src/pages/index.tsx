@@ -1,11 +1,15 @@
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import PodcastCard from "~/components/PodcastCard";
-import {api} from "~/utils/api";
+import { api } from "~/utils/api";
 
-export default function Home(){
+export default function Home() {
   const { data: sessionData } = useSession();
-  const podcasts = api.podcast.getPodcast.useQuery({category: "history", languageCode: "en", limit: 10});
+  const podcasts = api.podcast.getPodcast.useQuery({
+    category: "history",
+    languageCode: "en",
+    limit: 10,
+  });
   console.log(sessionData);
   return (
     <>

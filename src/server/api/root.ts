@@ -1,6 +1,6 @@
 import { createTRPCRouter } from "~/server/api/trpc";
-import {podcastRouter} from "~/server/api/routers/podcast";
-import {episodeRouter} from "~/server/api/routers/episode";
+import { podcastRouter } from "~/server/api/routers/podcast";
+import { episodeRouter } from "~/server/api/routers/episode";
 
 /**
  * This is the primary router for your server.

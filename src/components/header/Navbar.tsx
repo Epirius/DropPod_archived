@@ -12,15 +12,15 @@ const Navbar = () => {
             Category
           </NavigationMenu.Trigger>
           <NavigationMenu.Content className="absolute left-0 top-0 w-full sm:w-auto pl-4 pt-2">
-              {getCategoryList().map((category) => {
-                  return (
-                      <ListItem
-                          href={`/category/${category}`}
-                          title={category}
-                          key={category}
-                      />
-                  );
-              })}
+            {getCategoryList().map((category) => {
+              return (
+                <ListItem
+                  href={`/category/${category}`}
+                  title={category}
+                  key={category}
+                />
+              );
+            })}
           </NavigationMenu.Content>
         </NavigationMenu.Item>
 
@@ -39,7 +39,6 @@ interface ListItemProps {
   title: string;
 }
 
-
 const ListItem = ({ href, title }: ListItemProps) => {
   return (
     <li className="list-none">
@@ -49,6 +48,5 @@ const ListItem = ({ href, title }: ListItemProps) => {
     </li>
   );
 };
-
 
 export default Navbar;
