@@ -18,6 +18,26 @@ export const zMetaData = z.object({
   language_code: z.string(),
 });
 
+export type EpisodeData = {
+  title: string | null,
+  description: string | null,
+  audio_url: string | null,
+  date: string | null,
+  image_url: string | null,
+  episode: string | null,
+  season: string | null,
+};
+
+export const zEpisodeData = z.array(z.object({
+  title: z.string().nullable(),
+  description: z.string().nullable(),
+  audio_url: z.string().nullable(),
+  date: z.string().nullable(),
+  image_url: z.string().nullable(),
+  episode: z.string().nullable(),
+  season: z.string().nullable(),
+}))
+
 // interface CommonPodcastData {
 //     title: string,
 //     link?: string | null,
