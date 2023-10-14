@@ -1,13 +1,14 @@
-import React, { type SyntheticEvent, useEffect, useRef, useState } from "react";
+import React, {type SyntheticEvent, useEffect, useRef, useState} from "react";
 import PlayButton from "./PlayButton";
-import { create } from "zustand";
+import {create} from "zustand";
 import Progressbar from "./Progressbar";
 import Volume from "./Volume";
 import SpeedController from "~/components/player/SpeedController";
-import { api } from "~/utils/api";
+import {api} from "~/utils/api";
+import {EpisodeData} from "~/types/podcastTypes";
 
 interface audioState {
-  episodeData: EpisodeType;
+  episodeData: EpisodeData;
 }
 
 interface audioAction {
@@ -17,9 +18,13 @@ interface audioAction {
 export const useAudioStore = create<audioState & audioAction>()((set) => ({
   episodeData: {
     title: "",
-    enclosure: {
-      url: "",
-    },
+    description: "",
+    audio_url: "",
+    guid: "",
+    date: "",
+    image_url: "",
+    episode: "",
+    season: "",
   },
   setAudioSource: (newData) =>
     set(() => ({
@@ -27,10 +32,9 @@ export const useAudioStore = create<audioState & audioAction>()((set) => ({
     })),
 }));
 
-const getEpisodeGuid = (episodeData: EpisodeType): string | undefined => {
-  const guid = episodeData.guid;
-  if (guid && typeof guid !== "string") return guid.data ?? undefined;
-  return guid;
+const getEpisodeGuid = (episodeData: EpisodeData): string | null => {
+  // if (guid && typeof guid !== "string") return guid.data ?? undefined;
+  return episodeData.guid;
 };
 
 const Player = () => {
@@ -68,7 +72,7 @@ const Player = () => {
   }, [playing]);
 
   useEffect(() => {
-    if (episodeData === undefined || episodeData.enclosure.url === "") return;
+    if (episodeData === undefined || episodeData.audio_url === "") return;
     pause();
     void player.current?.load();
     void playtimeQuery
@@ -84,8 +88,8 @@ const Player = () => {
   const handlePlayButtonClick = () => {
     if (!playing) {
       if (
-        episodeData.enclosure.url === "" ||
-        episodeData.enclosure.url === undefined
+        episodeData.audio_url === "" ||
+        episodeData.audio_url === undefined
       )
         return;
       play();
@@ -157,7 +161,7 @@ const Player = () => {
       <audio
         hidden={true}
         ref={player}
-        src={episodeData.enclosure.url}
+        src={episodeData.audio_url ?? undefined}
         onPlaying={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onTimeUpdate={(e) => refreshAudioData(e)}
@@ -173,12 +177,12 @@ const Player = () => {
       />
 
       <PlayButton onClick={handlePlayButtonClick} playing={playing} />
-      <Progressbar
+      {episodeData.audio_url && <Progressbar
         onChange={(time) => playerSeek(time)}
         length={player.current?.duration ?? 0}
         value={currentPlayerTime}
-        active={episodeData.enclosure.url.length > 0}
-      />
+        active={episodeData.audio_url.length > 0}
+      />}
       <SpeedController setSpeed={setPlaybackSpeed} speed={speed} />
     </div>
   );

@@ -30,7 +30,8 @@ const PodcastPage = () => {
     void Promise.allSettled([getEpisodedata(), getMetadata()]);
   }, [slug]);
 
-  if (!(slug instanceof String)) {
+  if (typeof slug !== "string") {
+    console.log(typeof slug)
     return <div>The slug is invalid. slug: {slug}</div>;
   }
 
