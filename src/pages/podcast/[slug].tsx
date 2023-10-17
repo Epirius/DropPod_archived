@@ -10,7 +10,7 @@ import {EpisodeList} from "~/components/EpisodeList";
 const PodcastPage = () => {
   const slug = useRouter().query.slug;
   const [metadata, setMetadata] = useState<MetaData>();
-  const [episodeData, setEpisodeData] = useState<[EpisodeData]>();
+  const [episodeData, setEpisodeData] = useState<EpisodeData[]>([]);
 
   useEffect(() => {
     if (typeof slug !== "string") return;
@@ -24,8 +24,6 @@ const PodcastPage = () => {
       if (!res.ok) return;
       const data = zEpisodeData.parse(await res.json());
       if (!data) return;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       setEpisodeData(data);
     }
     void Promise.allSettled([getEpisodedata(), getMetadata()]);

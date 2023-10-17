@@ -8,7 +8,7 @@ import {dbUrl} from "~/utils/backendInfo";
 
 export default function Home() {
   const { data: sessionData } = useSession();
-  const [podcasts, setPodcasts] = useState<[MetaData]>();
+  const [podcasts, setPodcasts] = useState<MetaData[]>([]);
 
   useEffect(() => {
       const getPodcasts = async () => {
@@ -19,8 +19,6 @@ export default function Home() {
           if (!res.ok) return;
           const data = zMetaData.array().parse(await res.json());
           if (!data) return;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         setPodcasts(data);
       }
       void getPodcasts();

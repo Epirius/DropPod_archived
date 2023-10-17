@@ -7,7 +7,7 @@ import {dbUrl} from "~/utils/backendInfo";
 
 const CategoryPage = () => {
   const slug = useRouter().query.slug as string;
-  const [podcasts, setPodcasts] = useState<[MetaData]>();
+  const [podcasts, setPodcasts] = useState<MetaData[]>([]);
 
   useEffect(() => {
     if (!slug) return;
@@ -18,18 +18,11 @@ const CategoryPage = () => {
       if (!res.ok) return;
       const data = zMetaData.array().parse(await res.json());
       if (!data) return;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       setPodcasts(data);
     }
     void getPodcasts();
   }, [slug])
 
-  // const podcasts = api.podcast.getPodcast.useQuery({
-  //   category: slug,
-  //   languageCode: "en",
-  //   limit: 10,
-  // });
   return (
     <div className="grid grid-cols-4  gap-4 overflow-x-hidden">
       {podcasts &&
