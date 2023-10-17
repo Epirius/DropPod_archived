@@ -1,7 +1,5 @@
 import React from "react";
 import { FaCirclePlay, FaCirclePause } from "react-icons/fa6";
-import * as Switch from "@radix-ui/react-switch";
-import * as Toggle from "@radix-ui/react-toggle";
 
 interface Props {
   playing: boolean;

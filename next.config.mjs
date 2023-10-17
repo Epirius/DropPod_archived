@@ -20,19 +20,23 @@ const config = {
   },
   images: {
     remotePatterns: [
-        {
-          protocol:   "https",
-          hostname: '**',
-          port: '',
-          pathname: '**',
-      },{
-          protocol:  "http" ,
-          hostname: '**',
-          port: '',
-          pathname: '**',
+      {
+        protocol: "https",
+        hostname: "**",
+        port: "",
+        pathname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "**",
+        port: "",
+        pathname: "**",
       },
     ],
-},
+  },
+  env: {
+    BACKEND_URL: process.env.BACKEND_URL ?? "http://localhost:8080"
+  }
 };
 
 export default config;

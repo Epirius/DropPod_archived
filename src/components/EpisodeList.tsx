@@ -1,72 +1,36 @@
-import type { Podcast } from "@prisma/client";
-import { useVirtualizer } from "@tanstack/react-virtual";
-import React, { useRef } from "react";
-import { useAudioStore } from "./player/Player";
+import type {EpisodeData} from "~/types/podcastTypes";
+import React from "react";
+import * as Separator from '@radix-ui/react-separator';
+import {useAudioStore} from "~/components/player/Player";
 
-interface Props {
-  podcast: Podcast;
-  metaData: metaData;
+type Props = {
+    data: [EpisodeData]
 }
 
-const EpisodeList = ({ podcast, metaData }: Props) => {
-  // The scrollable element for your list
-  const parentRef = useRef(null);
-
-  // The virtualizer
-  const rowVirtualizer = useVirtualizer({
-    count: metaData.items.length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 20,
-    overscan: 5,
-  });
-  return (
-    <div
-      className=" absolute bottom-0 top-0 w-full overflow-auto bg-yellow-500"
-      ref={parentRef}
-    >
-      <div
-        style={{
-          height: `${rowVirtualizer.getTotalSize()}px`,
-          width: "100%",
-          position: "relative",
-        }}
-      >
-        {rowVirtualizer.getVirtualItems().map((virutalRow) => (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: `${virutalRow.size}px`,
-              transform: `translateY(${virutalRow.start}px)`,
-            }}
-            key={`${virutalRow.index}_e_key`}
-          >
-            <Episode data={metaData.items[virutalRow.index]} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+export const EpisodeList = ({data}: Props) => {
+    return (
+        <div>
+            <Separator.Root className="bg-BLACK_CYNICAL  rounded-sm py-0.5 mb-4" />
+            {data.map((e, i) => {
+                return <EpisodeItem episode={e} key={i}/>
+            })}
+        </div>
+    );
 };
 
-interface EpisodeProps {
-  data: EpisodeType | undefined;
+type ItemProps = {
+    episode: EpisodeData
 }
+const EpisodeItem = ({episode}: ItemProps) => {
+    const [setAudioSource] = useAudioStore((state) => [state.setAudioSource]);
+    return (
+        <div className="flex-col flex">
+        <div className="flex flex-row justify-between px-4">
+            <p className="text-xl truncate">{episode.title}</p>
+            <button className="pl-8" onClick={() => setAudioSource(episode)}>play</button>
+        </div>
+            <Separator.Root className="bg-BLACK_CYNICAL  rounded-sm py-0.5 my-4" />
+        </div>
+    )
 
-const Episode = ({ data }: EpisodeProps) => {
-  const [setAudioSource] = useAudioStore((state) => [state.setAudioSource]);
-  if (!data) {
-    return <p className="bg-red-600">error this episode does not exist</p>;
-  }
-
-  return (
-    <div className="space-be flex flex-row justify-between">
-      <p>{data.title}</p>
-      <button onClick={() => setAudioSource(data)}>play</button>
-    </div>
-  );
-};
-
-export default EpisodeList;
+}

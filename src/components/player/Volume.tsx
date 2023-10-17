@@ -11,13 +11,21 @@ interface Props {
 }
 
 const Volume = ({ onChange, muted, muteSound, defaultValue, value }: Props) => {
-    const muteThreshold = 0.02;
+  const muteThreshold = 0.02;
   return (
     <div className="flex flex-row items-center gap-2">
       {muted ? (
-        <FaVolumeMute onClick={() => {if (value > muteThreshold) muteSound(false)}} className="text-WHITE_EGG" />
+        <FaVolumeMute
+          onClick={() => {
+            if (value > muteThreshold) muteSound(false);
+          }}
+          className="text-WHITE_EGG"
+        />
       ) : (
-        <FaVolumeDown onClick={() => muteSound(true)} className="text-WHITE_EGG" />
+        <FaVolumeDown
+          onClick={() => muteSound(true)}
+          className="text-WHITE_EGG"
+        />
       )}
       <Slider.Root
         className="relative flex h-5 w-[100px] touch-none select-none items-center"

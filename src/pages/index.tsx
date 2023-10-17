@@ -1,12 +1,31 @@
+import {useEffect, useState} from "react";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import PodcastCard from "~/components/PodcastCard";
-import {api} from "~/utils/api";
+import {zMetaData} from "~/types/podcastTypes";
+import type {MetaData} from "~/types/podcastTypes";
+import {dbUrl} from "~/utils/backendInfo";
 
-export default function Home(){
+export default function Home() {
   const { data: sessionData } = useSession();
-  const podcasts = api.podcast.getPodcast.useQuery({category: "history", languageCode: "en", limit: 10});
-  console.log(sessionData);
+  const [podcasts, setPodcasts] = useState<[MetaData]>();
+
+  useEffect(() => {
+      const getPodcasts = async () => {
+          const category = "history";
+          const languageCode = "en";
+          const quantity = 12;
+          const res = await fetch(`${dbUrl}/api/podcast/list?category=${category}&lang=${languageCode}&quantity=${quantity}`);
+          if (!res.ok) return;
+          const data = zMetaData.array().parse(await res.json());
+          if (!data) return;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        setPodcasts(data);
+      }
+      void getPodcasts();
+  }, [])
+
   return (
     <>
       <Head>
@@ -34,8 +53,8 @@ export default function Home(){
       <main className=" overflow-auto ">
         {sessionData && (
           <div className="grid grid-cols-4  gap-4 overflow-x-hidden">
-            {podcasts.data &&
-              podcasts.data.map((p) => (
+            {podcasts &&
+              podcasts.map((p) => (
                 <PodcastCard key={p.guid + "_card"} data={p} />
               ))}
           </div>
