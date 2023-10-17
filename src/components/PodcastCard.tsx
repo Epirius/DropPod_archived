@@ -13,6 +13,7 @@ interface Props {
   size?: number
 }
 
+//TODO handle data still loading, or missing images / title / category
 const PodcastCard = ({ data, type = CardType.Cover, size }: Props) => {
   if (!size && type === CardType.List) size = 100;
   if (!size && type === CardType.Cover) size = 200;
@@ -20,7 +21,7 @@ const PodcastCard = ({ data, type = CardType.Cover, size }: Props) => {
   return (
     <div>
       {type === CardType.Cover &&
-        <Link href={"/podcast/" + data.guid}>
+        <Link href={"/podcast/" + data.guid} className="flex justify-center items-center">
           <Image
             src={data.image_url}
             width={size}
