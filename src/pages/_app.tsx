@@ -7,11 +7,13 @@ import "~/styles/globals.css";
 import Player from "~/components/player/Player";
 import Head from "next/head";
 import Header from "~/components/header/Header";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const queryClient = new QueryClient()
   return (
     <>
       <Head>
@@ -38,6 +40,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       </Head>
 
       <SessionProvider session={session}>
+        <QueryClientProvider client={queryClient}>
         <div className="flex h-screen max-h-screen min-h-screen flex-col">
           <Header />
           <div className="h-1 flex-grow bg-GRAY_CLOUD text-slate-50 ">
@@ -46,6 +49,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           </div>
           <Player />
         </div>
+        </QueryClientProvider>
       </SessionProvider>
     </>
   );

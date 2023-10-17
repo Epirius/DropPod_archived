@@ -24,7 +24,13 @@ const Navbar = () => {
           </NavigationMenu.Content>
         </NavigationMenu.Item>
 
-        <NavigationMenu.Indicator />
+        {/*<NavigationMenu.Indicator />*/}
+
+          <NavigationMenu.Item>
+              <NavigationMenu.Link href="search" className="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none">
+                Search
+              </NavigationMenu.Link>
+          </NavigationMenu.Item>
       </NavigationMenu.List>
 
       <div className="perspective-[2000px] absolute left-0 top-full flex w-fit ">

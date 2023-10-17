@@ -4,7 +4,7 @@ import * as Separator from '@radix-ui/react-separator';
 import {useAudioStore} from "~/components/player/Player";
 
 type Props = {
-    data: [EpisodeData]
+    data: EpisodeData[]
 }
 
 export const EpisodeList = ({data}: Props) => {
