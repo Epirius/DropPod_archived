@@ -1,8 +1,7 @@
-import { type Podcast } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import {MetaData} from "~/types/podcastTypes";
+import type {MetaData} from "~/types/podcastTypes";
 
 interface Props {
   data: MetaData;

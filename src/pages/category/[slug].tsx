@@ -1,7 +1,8 @@
 import { useRouter } from "next/router";
 import React, {useEffect, useState} from "react";
 import PodcastCard from "~/components/PodcastCard";
-import {MetaData, zMetaData} from "~/types/podcastTypes";
+import {zMetaData} from "~/types/podcastTypes";
+import type {MetaData} from "~/types/podcastTypes";
 import {dbUrl} from "~/utils/backendInfo";
 
 const CategoryPage = () => {

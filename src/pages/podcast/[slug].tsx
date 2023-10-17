@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { dbUrl } from "~/utils/backendInfo";
-import {EpisodeData, MetaData, zEpisodeData, zMetaData} from "~/types/podcastTypes";
+import {zMetaData, zEpisodeData} from "~/types/podcastTypes";
+import type {EpisodeData, MetaData} from "~/types/podcastTypes";
 import * as AspectRatio from "@radix-ui/react-aspect-ratio";
 import {EpisodeList} from "~/components/EpisodeList";
 

@@ -2,7 +2,8 @@ import {useEffect, useState} from "react";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import PodcastCard from "~/components/PodcastCard";
-import {MetaData, zMetaData} from "~/types/podcastTypes";
+import {zMetaData} from "~/types/podcastTypes";
+import type {MetaData} from "~/types/podcastTypes";
 import {dbUrl} from "~/utils/backendInfo";
 
 export default function Home() {

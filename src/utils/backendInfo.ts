@@ -1,1 +1,3 @@
-export const dbUrl = "http://127.0.0.1:4000";
+import * as process from "process";
+
+export const dbUrl = process.env.BACKEND_URL ?? "http://localhost:8080";

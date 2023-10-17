@@ -5,7 +5,7 @@ import Progressbar from "./Progressbar";
 import Volume from "./Volume";
 import SpeedController from "~/components/player/SpeedController";
 import {api} from "~/utils/api";
-import {EpisodeData} from "~/types/podcastTypes";
+import type {EpisodeData} from "~/types/podcastTypes";
 
 interface audioState {
   episodeData: EpisodeData;
