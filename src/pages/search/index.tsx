@@ -4,6 +4,7 @@ import {MetaData, zMetaData} from "~/types/podcastTypes";
 import {useQuery} from "@tanstack/react-query";
 import {useDebounce} from "@uidotdev/usehooks";
 import CardList from "~/components/CardList";
+import Spinner from "~/components/Spinner";
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,7 +25,12 @@ const SearchPage = () => {
   return (
     <div className="px-8 pt-8 ">
       <div className="flex flex-col gap-4 pb-8">
-        <h1 className="text-3xl font-bold">Search:</h1>
+        <div className="flex flex-row items-center">
+          <h1 className="text-3xl font-bold pr-4">Search:</h1>
+          {isLoading && searchTerm && searchTerm.length > 0 &&
+              <Spinner size={24} thickness={3} />
+          }
+        </div>
         <input
           type="text"
           onChange={e => setSearchTerm(e.target.value)}

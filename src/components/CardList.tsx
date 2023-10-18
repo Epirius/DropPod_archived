@@ -40,9 +40,12 @@ const CardList = ({data, isLoading, error}: Props) => {
       <div
         className={cardType == CardType.Cover ? gridClass : listClass}
       >
-        {data && !isLoading && data.map((p) => (
+        {data && data.length > 0 && !isLoading && data.map((p) => (
           <PodcastCard key={p.guid + "_card"} data={p} type={cardType} />
         ))}
+        {data && data.length === 0 && !isLoading && (
+          <p>Could not find any podcasts</p>
+        )}
       </div>
     </div>
   )
