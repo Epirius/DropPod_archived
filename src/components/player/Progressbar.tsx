@@ -23,7 +23,10 @@ const Progressbar = ({
   };
   return (
     <form className="flex flex-row items-center gap-3">
-      <div className="text-[10px] text-WHITE_EGG" aria-label="current playtime">
+      <div
+        className="text-[10px] text-WHITE_EGG hidden sm:visible"
+        aria-label="current playtime"
+      >
         {active && value[0] && secondsToTime(value[0])}
       </div>
 
@@ -45,7 +48,10 @@ const Progressbar = ({
           aria-label="progress bar"
         />
       </Slider.Root>
-      <div className="text-[10px] text-WHITE_EGG" aria-label="total playtime">
+      <div
+        className="text-[10px] text-WHITE_EGG hidden sm:visible"
+        aria-label="total playtime"
+      >
         {active && secondsToTime(length)}
       </div>
     </form>

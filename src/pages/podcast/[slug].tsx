@@ -35,10 +35,10 @@ const PodcastPage = () => {
 
   // if (!podcast) return <p>could not load page</p>;
   return (
-    <div className="relative px-12 flex flex-col">
+    <div className="relative sm:px-12 flex flex-col">
       {/* Podcast metadata display */}
       <div className=" md:w-full  self-center md:self-start py-8 md:py-12 flex flex-col md:flex-row gap-4 md:gap-12">
-        <div className="relative w-[200px] h-[200px] md:w-[300px] md:h-[300px] flex-none">
+        <div className="relative w-[200px] h-[200px] md:w-[300px] md:h-[300px] flex-none self-center">
           <AspectRatio.Root ratio={1}>
             {metadata?.image_url && (
               <Image
@@ -67,13 +67,7 @@ const PodcastPage = () => {
           )}
         </div>
       </div>
-      {/* Episode list */}
-      {/*<div className="relative flex-grow">*/}
-
       {episodeData && <EpisodeList data={episodeData} />}
-
-      {/*<EpisodeList podcast={podcast} metaData={podcastData} />*/}
-      {/*</div>*/}
     </div>
   );
 };
