@@ -13,7 +13,7 @@ interface Props {
 const Volume = ({ onChange, muted, muteSound, defaultValue, value }: Props) => {
   const muteThreshold = 0.02;
   return (
-    <div className="flex flex-row items-center gap-2">
+    <div className="sm:flex flex-row items-center gap-2 hidden sm:visible">
       {muted ? (
         <FaVolumeMute
           onClick={() => {

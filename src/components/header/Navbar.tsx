@@ -5,7 +5,7 @@ import { getCategoryList } from "~/types/categories";
 
 const Navbar = () => {
   return (
-    <NavigationMenu.Root className="relative z-[1] ml-16 flex w-screen">
+    <NavigationMenu.Root className="relative z-[1] flex w-screen">
       <NavigationMenu.List className="center  m-0 flex list-none gap-4 rounded-[6px]  py-1">
         <NavigationMenu.Item>
           <NavigationMenu.Trigger className="flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none">

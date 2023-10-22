@@ -35,7 +35,7 @@ export const SpeedController = ({ speed, setSpeed }: Props) => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-1.5 p-2">
+    <div className="sm:flex flex-col items-center gap-1.5 p-2 hidden">
       <button
         aria-label="increase playback speed"
         onClick={() => increaseSpeed()}
