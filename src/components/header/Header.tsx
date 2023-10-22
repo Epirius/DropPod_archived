@@ -11,7 +11,7 @@ const Header = () => {
     <header className="flex flex-row items-center bg-BLACK_CYNICAL text-slate-50">
       <Link
         href={"/"}
-        className="flex w-auto flex-row items-center gap-3 py-3 pl-2"
+        className="flex w-auto flex-row items-center gap-3 py-3 pl-2 hover:scale-105"
       >
         <Image src={logo} width="40" height="40" alt={"Drop pod logo"} />
         <p>DropPod</p>

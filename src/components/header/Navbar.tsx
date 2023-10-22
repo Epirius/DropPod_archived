@@ -8,7 +8,7 @@ const Navbar = () => {
     <NavigationMenu.Root className="relative z-[1] ml-16 flex w-screen">
       <NavigationMenu.List className="center  m-0 flex list-none gap-4 rounded-[6px]  py-1">
         <NavigationMenu.Item>
-          <NavigationMenu.Trigger className="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none">
+          <NavigationMenu.Trigger className="flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none">
             Category
           </NavigationMenu.Trigger>
           <NavigationMenu.Content className="absolute left-0 top-0 w-full sm:w-auto pl-4 pt-2">
@@ -26,11 +26,14 @@ const Navbar = () => {
 
         {/*<NavigationMenu.Indicator />*/}
 
-          <NavigationMenu.Item>
-              <NavigationMenu.Link href="search" className="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none">
-                Search
-              </NavigationMenu.Link>
-          </NavigationMenu.Item>
+        <NavigationMenu.Item>
+          <NavigationMenu.Link
+            href="search"
+            className="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none hover:underline"
+          >
+            Search
+          </NavigationMenu.Link>
+        </NavigationMenu.Item>
       </NavigationMenu.List>
 
       <div className="perspective-[2000px] absolute left-0 top-full flex w-fit ">
@@ -47,7 +50,7 @@ interface ListItemProps {
 
 const ListItem = ({ href, title }: ListItemProps) => {
   return (
-    <li className="list-none">
+    <li className="list-none hover:underline hover:text-[1.1rem]">
       <NavigationMenu.Link asChild>
         <Link href={href}>{title}</Link>
       </NavigationMenu.Link>
