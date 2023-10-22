@@ -1,11 +1,11 @@
-import React, {type SyntheticEvent, useEffect, useRef, useState} from "react";
+import React, { type SyntheticEvent, useEffect, useRef, useState } from "react";
 import PlayButton from "./PlayButton";
-import {create} from "zustand";
+import { create } from "zustand";
 import Progressbar from "./Progressbar";
 import Volume from "./Volume";
 import SpeedController from "~/components/player/SpeedController";
-import {api} from "~/utils/api";
-import type {EpisodeData} from "~/types/podcastTypes";
+import { api } from "~/utils/api";
+import type { EpisodeData } from "~/types/podcastTypes";
 
 interface audioState {
   episodeData: EpisodeData;
@@ -87,10 +87,7 @@ const Player = () => {
 
   const handlePlayButtonClick = () => {
     if (!playing) {
-      if (
-        episodeData.audio_url === "" ||
-        episodeData.audio_url === undefined
-      )
+      if (episodeData.audio_url === "" || episodeData.audio_url === undefined)
         return;
       play();
     } else {
@@ -157,7 +154,7 @@ const Player = () => {
   }, []);
 
   return (
-    <div className="z-40 flex h-20 items-center justify-center bg-RED_CARMINE">
+    <div className="z-40 flex h-20 items-center justify-center bg-RED_CARMINE sticky bottom-0">
       <audio
         hidden={true}
         ref={player}
@@ -177,12 +174,14 @@ const Player = () => {
       />
 
       <PlayButton onClick={handlePlayButtonClick} playing={playing} />
-      {episodeData.audio_url && <Progressbar
-        onChange={(time) => playerSeek(time)}
-        length={player.current?.duration ?? 0}
-        value={currentPlayerTime}
-        active={episodeData.audio_url.length > 0}
-      />}
+      {episodeData.audio_url && (
+        <Progressbar
+          onChange={(time) => playerSeek(time)}
+          length={player.current?.duration ?? 0}
+          value={currentPlayerTime}
+          active={episodeData.audio_url.length > 0}
+        />
+      )}
       <SpeedController setSpeed={setPlaybackSpeed} speed={speed} />
     </div>
   );
