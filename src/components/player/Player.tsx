@@ -1,11 +1,11 @@
-import React, {type SyntheticEvent, useEffect, useRef, useState} from "react";
+import React, { type SyntheticEvent, useEffect, useRef, useState } from "react";
 import PlayButton from "./PlayButton";
-import {create} from "zustand";
+import { create } from "zustand";
 import Progressbar from "./Progressbar";
 import Volume from "./Volume";
 import SpeedController from "~/components/player/SpeedController";
-import {api} from "~/utils/api";
-import type {EpisodeData} from "~/types/podcastTypes";
+import { api } from "~/utils/api";
+import type { EpisodeData } from "~/types/podcastTypes";
 
 interface audioState {
   episodeData: EpisodeData;
@@ -66,6 +66,16 @@ const Player = () => {
     } else if (interval) {
       clearInterval(interval);
     }
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: episodeData.title ?? undefined,
+      artwork: [
+        {
+          src: episodeData.image_url ?? "",
+          sizes: "512x512",
+          type: "image/png",
+        },
+      ],
+    });
     return () => {
       if (interval) clearInterval(interval);
     };
@@ -87,10 +97,7 @@ const Player = () => {
 
   const handlePlayButtonClick = () => {
     if (!playing) {
-      if (
-        episodeData.audio_url === "" ||
-        episodeData.audio_url === undefined
-      )
+      if (episodeData.audio_url === "" || episodeData.audio_url === undefined)
         return;
       play();
     } else {
@@ -162,6 +169,7 @@ const Player = () => {
         hidden={true}
         ref={player}
         src={episodeData.audio_url ?? undefined}
+        title={episodeData.title ?? undefined}
         onPlaying={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onTimeUpdate={(e) => refreshAudioData(e)}
@@ -177,12 +185,14 @@ const Player = () => {
       />
 
       <PlayButton onClick={handlePlayButtonClick} playing={playing} />
-      {episodeData.audio_url && <Progressbar
-        onChange={(time) => playerSeek(time)}
-        length={player.current?.duration ?? 0}
-        value={currentPlayerTime}
-        active={episodeData.audio_url.length > 0}
-      />}
+      {episodeData.audio_url && (
+        <Progressbar
+          onChange={(time) => playerSeek(time)}
+          length={player.current?.duration ?? 0}
+          value={currentPlayerTime}
+          active={episodeData.audio_url.length > 0}
+        />
+      )}
       <SpeedController setSpeed={setPlaybackSpeed} speed={speed} />
     </div>
   );
