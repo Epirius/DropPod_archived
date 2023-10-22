@@ -66,6 +66,16 @@ const Player = () => {
     } else if (interval) {
       clearInterval(interval);
     }
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: episodeData.title ?? undefined,
+      artwork: [
+        {
+          src: episodeData.image_url ?? "",
+          sizes: "512x512",
+          type: "image/png",
+        },
+      ],
+    });
     return () => {
       if (interval) clearInterval(interval);
     };
@@ -159,6 +169,7 @@ const Player = () => {
         hidden={true}
         ref={player}
         src={episodeData.audio_url ?? undefined}
+        title={episodeData.title ?? undefined}
         onPlaying={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onTimeUpdate={(e) => refreshAudioData(e)}

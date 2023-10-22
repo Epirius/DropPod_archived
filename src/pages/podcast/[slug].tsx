@@ -27,6 +27,9 @@ const PodcastPage = () => {
       setEpisodeData(data);
     };
     void Promise.allSettled([getEpisodedata(), getMetadata()]);
+    episodeData.map(
+      (e) => (e.image_url = e.image_url ?? metadata?.image_url ?? "")
+    );
   }, [slug]);
 
   if (typeof slug !== "string") {
