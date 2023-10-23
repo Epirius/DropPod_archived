@@ -28,7 +28,7 @@ const Navbar = () => {
 
         <NavigationMenu.Item>
           <NavigationMenu.Link
-            href="search"
+            href="/search"
             className="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none hover:underline"
           >
             Search
