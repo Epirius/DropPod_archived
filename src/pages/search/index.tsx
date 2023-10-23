@@ -12,7 +12,6 @@ import { useRouter } from "next/router";
 const SearchPage = () => {
   const router = useRouter();
   const searchTerm = useSearchParams().get("q") ?? "";
-  const session = useSession();
 
   const debouncedFilter = useDebounce(searchTerm, 500);
   const { data, isLoading, error } = useQuery(
@@ -20,7 +19,6 @@ const SearchPage = () => {
     () => fetchSearchResults(debouncedFilter),
     { enabled: Boolean(debouncedFilter), staleTime: 60 * 1000 * 24 }
   );
-  console.log(session);
 
   const fetchSearchResults = async (
     searchTerm: string
@@ -32,7 +30,9 @@ const SearchPage = () => {
 
   const updateQueryParamas = (e: ChangeEvent<HTMLInputElement>) => {
     void router.replace(
-      e.target.value.length > 0 ? `?q=${e.target.value}` : ""
+      e.target.value.length > 0
+        ? `?q=${e.target.value.replace(/ /g, "%20")}`
+        : ""
     );
   };
 
