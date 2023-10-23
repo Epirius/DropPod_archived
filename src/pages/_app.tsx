@@ -8,6 +8,7 @@ import Player from "~/components/player/Player";
 import Head from "next/head";
 import Header from "~/components/header/Header";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import MainWrapper from "~/components/MainWrapper";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -43,8 +44,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <QueryClientProvider client={queryClient}>
           <div className="flex h-screen max-h-screen min-h-screen flex-col">
             <Header />
-            <div className="h-1 flex-grow bg-GRAY_CLOUD text-slate-50 h-full overflow-y-auto pb-8 ">
-              <Component {...pageProps} />
+            <div className="h-1 flex-grow bg-GRAY_CLOUD text-slate-50 h-full overflow-y-auto">
+              <MainWrapper>
+                <Component {...pageProps} />
+              </MainWrapper>
               <Analytics />
             </div>
             <Player />
