@@ -40,7 +40,7 @@ const PodcastPage = () => {
   return (
     <div className="relative sm:px-12 flex flex-col">
       {/* Podcast metadata display */}
-      <div className=" md:w-full  self-center md:self-start py-8 md:py-12 flex flex-col md:flex-row gap-4 md:gap-12">
+      <div className=" md:w-full  self-center md:self-start pb-8 md:pb-12 flex flex-col md:flex-row gap-4 md:gap-12">
         <div className="relative w-[200px] h-[200px] md:w-[300px] md:h-[300px] flex-none self-center">
           <AspectRatio.Root ratio={1}>
             {metadata?.image_url && (
