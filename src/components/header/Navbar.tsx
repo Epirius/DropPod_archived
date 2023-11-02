@@ -2,8 +2,10 @@ import React from "react";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import Link from "next/link";
 import { getCategoryList } from "~/types/categories";
+import { useSession } from "next-auth/react";
 
 const Navbar = () => {
+  const session = useSession();
   return (
     <NavigationMenu.Root className="relative z-[1] flex w-screen">
       <NavigationMenu.List className="center  m-0 flex list-none gap-4 rounded-[6px]  py-1">
@@ -32,6 +34,16 @@ const Navbar = () => {
             className="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none hover:underline"
           >
             Search
+          </NavigationMenu.Link>
+        </NavigationMenu.Item>
+        <NavigationMenu.Item>
+          <NavigationMenu.Link
+            href={
+              session.status === "authenticated" ? "/my-podcasts" : "/login"
+            }
+            className="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none hover:underline"
+          >
+            My Podcasts
           </NavigationMenu.Link>
         </NavigationMenu.Item>
       </NavigationMenu.List>

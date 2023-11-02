@@ -11,7 +11,7 @@ const LoginPage = () => {
     if (session.status === "authenticated") {
       void router.push("/");
     }
-  }, [session]);
+  }, [router, session]);
 
   return (
     <div className="border w-fit">
