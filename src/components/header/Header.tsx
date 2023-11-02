@@ -22,7 +22,8 @@ const Header = () => {
   );
 };
 
-const Login = () => {
+export const Login = () => {
+  // TODO extract this to its own component
   const { data: sessionData } = useSession();
 
   return (
