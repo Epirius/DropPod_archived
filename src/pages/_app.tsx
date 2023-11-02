@@ -8,6 +8,7 @@ import Player from "~/components/player/Player";
 import Head from "next/head";
 import Header from "~/components/header/Header";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import MainWrapper from "~/components/MainWrapper";
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -52,6 +53,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
             </div>
             <Player />
           </div>
+          {process.env.NODE_ENV !== "production" && <ReactQueryDevtools />}
         </QueryClientProvider>
       </SessionProvider>
     </>
