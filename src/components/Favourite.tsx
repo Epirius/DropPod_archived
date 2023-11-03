@@ -20,7 +20,6 @@ const Favourite = ({ podcastGuid }: Props) => {
   const session = useSession();
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [fav, setFav] = useState(false);
 
   const favouriteList = useQuery({
     queryKey: ["favourite", session.data?.user?.id],
@@ -76,7 +75,7 @@ const Favourite = ({ podcastGuid }: Props) => {
       disabled={favouriteList.status !== "success"}
       onClick={() => mutateFavourite.mutate(isFav)}
       aria-label={
-        fav ? "remove podcast from favourits" : "add podcast to favourits"
+        isFav ? "remove podcast from favourites" : "add podcast to favourites"
       }
     >
       {favouriteList.status === "error" && !favouriteList.isFetching && (
