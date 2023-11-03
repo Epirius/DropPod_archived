@@ -22,6 +22,7 @@ declare module "next-auth" {
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
+    cookieName: "next-auth.session-token";
   }
 
   // interface User {
