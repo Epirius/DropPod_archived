@@ -1,11 +1,9 @@
 import { type ChangeEvent } from "react";
-import { dbUrl } from "~/utils/backendInfo";
 import { type MetaData, zMetaData } from "~/types/podcastTypes";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
 import CardList from "~/components/CardList";
 import Spinner from "~/components/Spinner";
-import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 
@@ -24,9 +22,7 @@ const SearchPage = () => {
     searchTerm: string
   ): Promise<MetaData[]> => {
     if (searchTerm.length === 0) return [];
-    const res = await fetch(
-      `${dbUrl}/api2/podcast/search?search=${searchTerm}`
-    );
+    const res = await fetch(`/api2/podcast/search?search=${searchTerm}`);
     return zMetaData.array().parse(await res.json());
   };
 

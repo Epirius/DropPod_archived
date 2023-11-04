@@ -2,7 +2,6 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { dbUrl } from "~/utils/backendInfo";
 import { zMetaData } from "~/types/podcastTypes";
 import CardList from "~/components/CardList";
 
@@ -20,7 +19,7 @@ const MyPodcastsPage = () => {
     queryKey: ["favourite", session.data?.user?.id],
     staleTime: 60 * 1000 * 5,
     queryFn: () =>
-      fetch(`${dbUrl}/api2/subscribe`, {
+      fetch(`/api2/subscribe`, {
         credentials: "include",
       })
         .then((res) => res.json())
