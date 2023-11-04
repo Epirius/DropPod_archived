@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { dbUrl } from "~/utils/backendInfo";
 import { zMetaData, zEpisodeData } from "~/types/podcastTypes";
 import type { EpisodeData, MetaData } from "~/types/podcastTypes";
 import * as AspectRatio from "@radix-ui/react-aspect-ratio";
@@ -17,12 +16,12 @@ const PodcastPage = () => {
   useEffect(() => {
     if (typeof slug !== "string") return;
     const getMetadata = async () => {
-      const res = await fetch(`${dbUrl}/api2/podcast/meta/${slug}`);
+      const res = await fetch(`/api2/podcast/meta/${slug}`);
       if (!res.ok) return;
       setMetadata(zMetaData.parse(await res.json()));
     };
     const getEpisodedata = async () => {
-      const res = await fetch(`${dbUrl}/api2/podcast/episode/${slug}`);
+      const res = await fetch(`/api2/podcast/episode/${slug}`);
       if (!res.ok) return;
       const data = zEpisodeData.parse(await res.json());
       if (!data) return;

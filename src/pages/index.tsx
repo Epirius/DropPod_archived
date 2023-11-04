@@ -4,7 +4,6 @@ import Head from "next/head";
 import PodcastCard from "~/components/PodcastCard";
 import { zMetaData } from "~/types/podcastTypes";
 import type { MetaData } from "~/types/podcastTypes";
-import { dbUrl } from "~/utils/backendInfo";
 import MainWrapper from "~/components/MainWrapper";
 
 export default function Home() {
@@ -17,7 +16,7 @@ export default function Home() {
       const languageCode = "en";
       const quantity = 12;
       const res = await fetch(
-        `${dbUrl}/api2/podcast/list?category=${category}&lang=${languageCode}&quantity=${quantity}`
+        `/api2/podcast/list?category=${category}&lang=${languageCode}&quantity=${quantity}`
       );
       if (!res.ok) return;
       const data = zMetaData.array().parse(await res.json());

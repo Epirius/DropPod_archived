@@ -6,9 +6,8 @@ import {
   PiHeartFill,
   PiHeartHalfDuotone,
 } from "react-icons/pi";
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
-import { dbUrl } from "~/utils/backendInfo";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { zMetaData } from "~/types/podcastTypes";
 
@@ -25,7 +24,7 @@ const Favourite = ({ podcastGuid }: Props) => {
     queryKey: ["favourite", session.data?.user?.id],
     staleTime: 60 * 1000 * 5,
     queryFn: () =>
-      fetch(`${dbUrl}/api2/subscribe`, {
+      fetch(`$/api2/subscribe`, {
         credentials: "include",
       })
         .then((res) => res.json())
@@ -46,12 +45,12 @@ const Favourite = ({ podcastGuid }: Props) => {
         `);
       }
       if (isFav) {
-        return fetch(`${dbUrl}/api2/subscribe?podcast_id=${podcastGuid}`, {
+        return fetch(`/api2/subscribe?podcast_id=${podcastGuid}`, {
           method: "DELETE",
           credentials: "include",
         });
       } else {
-        return fetch(`${dbUrl}/api2/subscribe?podcast_id=${podcastGuid}`, {
+        return fetch(`/api2/subscribe?podcast_id=${podcastGuid}`, {
           method: "POST",
           credentials: "include",
         });
