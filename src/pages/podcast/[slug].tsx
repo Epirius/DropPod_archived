@@ -17,12 +17,12 @@ const PodcastPage = () => {
   useEffect(() => {
     if (typeof slug !== "string") return;
     const getMetadata = async () => {
-      const res = await fetch(`${dbUrl}/api/podcast/meta/${slug}`);
+      const res = await fetch(`${dbUrl}/api2/podcast/meta/${slug}`);
       if (!res.ok) return;
       setMetadata(zMetaData.parse(await res.json()));
     };
     const getEpisodedata = async () => {
-      const res = await fetch(`${dbUrl}/api/podcast/episode/${slug}`);
+      const res = await fetch(`${dbUrl}/api2/podcast/episode/${slug}`);
       if (!res.ok) return;
       const data = zEpisodeData.parse(await res.json());
       if (!data) return;

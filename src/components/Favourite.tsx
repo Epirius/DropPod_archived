@@ -25,7 +25,7 @@ const Favourite = ({ podcastGuid }: Props) => {
     queryKey: ["favourite", session.data?.user?.id],
     staleTime: 60 * 1000 * 5,
     queryFn: () =>
-      fetch(`${dbUrl}/api/subscribe`, {
+      fetch(`${dbUrl}/api2/subscribe`, {
         credentials: "include",
       })
         .then((res) => res.json())
@@ -46,12 +46,12 @@ const Favourite = ({ podcastGuid }: Props) => {
         `);
       }
       if (isFav) {
-        return fetch(`${dbUrl}/api/subscribe?podcast_id=${podcastGuid}`, {
+        return fetch(`${dbUrl}/api2/subscribe?podcast_id=${podcastGuid}`, {
           method: "DELETE",
           credentials: "include",
         });
       } else {
-        return fetch(`${dbUrl}/api/subscribe?podcast_id=${podcastGuid}`, {
+        return fetch(`${dbUrl}/api2/subscribe?podcast_id=${podcastGuid}`, {
           method: "POST",
           credentials: "include",
         });

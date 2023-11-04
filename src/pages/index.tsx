@@ -17,7 +17,7 @@ export default function Home() {
       const languageCode = "en";
       const quantity = 12;
       const res = await fetch(
-        `${dbUrl}/api/podcast/list?category=${category}&lang=${languageCode}&quantity=${quantity}`
+        `${dbUrl}/api2/podcast/list?category=${category}&lang=${languageCode}&quantity=${quantity}`
       );
       if (!res.ok) return;
       const data = zMetaData.array().parse(await res.json());

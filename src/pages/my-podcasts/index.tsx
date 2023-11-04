@@ -20,7 +20,7 @@ const MyPodcastsPage = () => {
     queryKey: ["favourite", session.data?.user?.id],
     staleTime: 60 * 1000 * 5,
     queryFn: () =>
-      fetch(`${dbUrl}/api/subscribe`, {
+      fetch(`${dbUrl}/api2/subscribe`, {
         credentials: "include",
       })
         .then((res) => res.json())
