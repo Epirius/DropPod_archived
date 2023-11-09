@@ -2,9 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import logo from "../../../public/logo1.png";
-import { signIn, useSession } from "next-auth/react";
-import ProfileAvatar from "../ui/ProfileAvatar";
 import Navbar from "./Navbar";
+import Login from "~/components/LoginButton";
 
 const Header = () => {
   return (
@@ -19,26 +18,6 @@ const Header = () => {
       <Navbar />
       <Login />
     </header>
-  );
-};
-
-export const Login = () => {
-  // TODO extract this to its own component
-  const { data: sessionData } = useSession();
-
-  return (
-    <div className="ml-auto mr-3">
-      {sessionData ? (
-        <ProfileAvatar />
-      ) : (
-        <button
-          className="rounded-full bg-GRAY_CLOUD px-8 py-2.5 font-semibold text-WHITE_EGG"
-          onClick={() => void signIn()}
-        >
-          Sign in
-        </button>
-      )}
-    </div>
   );
 };
 
