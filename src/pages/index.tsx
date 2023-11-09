@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
 import PodcastCard from "~/components/PodcastCard";
 import { zMetaData } from "~/types/podcastTypes";
@@ -7,7 +6,6 @@ import type { MetaData } from "~/types/podcastTypes";
 import MainWrapper from "~/components/MainWrapper";
 
 export default function Home() {
-  const { data: sessionData } = useSession();
   const [podcasts, setPodcasts] = useState<MetaData[]>([]);
 
   useEffect(() => {
@@ -51,17 +49,14 @@ export default function Home() {
         />
       </Head>
       <main className=" overflow-auto ">
-        {sessionData && (
-          <MainWrapper>
-            <div className="grid grid-cols-4  gap-4 overflow-x-hidden">
-              {podcasts &&
-                podcasts.map((p) => (
-                  <PodcastCard key={p.guid + "_card"} data={p} />
-                ))}
-            </div>
-          </MainWrapper>
-        )}
-        {!sessionData && <p>NOT SIGNED IN</p>}
+        <MainWrapper>
+          <div className="grid grid-cols-4  gap-4 overflow-x-hidden">
+            {podcasts &&
+              podcasts.map((p) => (
+                <PodcastCard key={p.guid + "_card"} data={p} />
+              ))}
+          </div>
+        </MainWrapper>
       </main>
     </>
   );

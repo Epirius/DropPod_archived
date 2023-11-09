@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { Login } from "~/components/header/Header";
+import Login from "~/components/LoginButton";
 
 const LoginPage = () => {
   const session = useSession();
@@ -14,7 +14,7 @@ const LoginPage = () => {
   }, [router, session]);
 
   return (
-    <div className="border w-fit">
+    <div className="">
       <Login />
     </div>
   );
