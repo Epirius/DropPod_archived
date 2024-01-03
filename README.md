@@ -1,3 +1,3 @@
-# DropPod
+# Droppod archived
 
-This is the repo for a hobby project where i am building a podcast listening [website](https://drop-epirius.vercel.app/)
+this repo is archived, see https://github.com/Epirius/droppod for the repo in active development
